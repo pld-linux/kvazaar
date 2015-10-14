@@ -1,0 +1,14 @@
+--- kvazaar-0.7.0/src/Makefile.orig	2015-10-14 21:32:29.905680671 +0200
++++ kvazaar-0.7.0/src/Makefile	2015-10-14 21:32:59.209013433 +0200
+@@ -123,7 +123,11 @@
+   ifeq ($(TARGET_CPU_BITS), 64)
+     ASFLAGS += -f elf64
+   else
++    ifeq ($(TARGET_CPU_BITS), x32)
++      ASFLAGS += -f elfx32
++    else
+     ASFLAGS += -f elf32
++    endif
+   endif
+   LIBKVAZAAR_SHARED = $(LIB)
+   INSTALL_TARGETS += install-lib install-static
