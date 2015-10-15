@@ -12,3 +12,15 @@
    endif
    LIBKVAZAAR_SHARED = $(LIB)
    INSTALL_TARGETS += install-lib install-static
+@@ -137,7 +137,11 @@
+ ifeq ($(TARGET_CPU_ARCH) $(TARGET_CPU_BITS), x86 64)
+   ASFLAGS += -DARCH_X86_64=1
+ else
++  ifeq ($(TARGET_CPU_ARCH) $(TARGET_CPU_BITS), x86 x32)
++    ASFLAGS += -DARCH_X86_64=1
++  else
+   ASFLAGS += -DARCH_X86_64=0
++  endif
+ endif
+ 
+ # Disable ASM optimizations if YASM is not found on path.
