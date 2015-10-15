@@ -78,7 +78,7 @@ LDFLAGS="%{rpmldflags}" \
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} -C src install \
+%{__make} -C src -j1 install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	PREFIX=%{_prefix} \
 	LIBDIR=%{_libdir}
