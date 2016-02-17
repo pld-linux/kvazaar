@@ -1,14 +1,16 @@
 Summary:	Kvazaar - open-source HEVC encoder
 Summary(pl.UTF-8):	Kvazaar - koder HEVC o otwartych źródłach
 Name:		kvazaar
-Version:	0.7.0
+Version:	0.8.2
 Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	https://github.com/ultravideo/kvazaar/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	8a77a9c30cd98e2aef01508bba55886d
-Patch0:		%{name}-x32.patch
+# Source0-md5:	9c614d753dc055dcbb343546d3cd4048
 URL:		https://github.com/ultravideo/kvazaar
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool
 %ifarch %{ix86} %{x8664} x32
 BuildRequires:	yasm
 %endif
@@ -47,41 +49,23 @@ Statyczna biblioteka Kvazaar.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
-CFLAGS="%{rpmcflags}" \
-LDFLAGS="%{rpmldflags}" \
-%{__make} -C src \
-	CC="%{__cc}" \
-	PREFIX=%{_prefix} \
-	LIBDIR=%{_libdir} \
-%ifarch %{ix86} %{x8664} x32
-	TARGET_CPU_ARCH=x86 \
-%endif
-%ifarch ppc ppc64
-	TARGET_CPU_ARCH=ppc \
-%endif
-%ifarch arm
-	TARGET_CPU_ARCH=ppc \
-%endif
-%ifarch %{ix86} ppc s390 sparc sparcv9
-	TARGET_CPU_BITS=32 \
-%endif
-%ifarch %{x8664} s390x ppc64 sparc64
-	TARGET_CPU_BITS=64 \
-%endif
-%ifarch x32
-	TARGET_CPU_BITS=x32
-%endif
+%{__libtoolize}
+%{__aclocal}
+%{__autoconf}
+%{__autoheader}
+%{__automake}
+
+%configure \
+	--disable-silent-rules
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} -C src -j1 install \
-	DESTDIR=$RPM_BUILD_ROOT \
-	PREFIX=%{_prefix} \
-	LIBDIR=%{_libdir}
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -94,7 +78,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc COPYING CREDITS README.md doc/syntax_elements.txt
 %attr(755,root,root) %{_bindir}/kvazaar
 %attr(755,root,root) %{_libdir}/libkvazaar.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libkvazaar.so.1
+%attr(755,root,root) %ghost %{_libdir}/libkvazaar.so.3
 
 %files devel
 %defattr(644,root,root,755)
