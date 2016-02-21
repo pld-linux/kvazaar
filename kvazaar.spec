@@ -8,9 +8,9 @@ Group:		Libraries
 Source0:	https://github.com/ultravideo/kvazaar/archive/v%{version}/%{name}-%{version}.tar.gz
 # Source0-md5:	9c614d753dc055dcbb343546d3cd4048
 URL:		https://github.com/ultravideo/kvazaar
-BuildRequires:	autoconf
-BuildRequires:	automake
-BuildRequires:	libtool
+BuildRequires:	autoconf >= 2.50
+BuildRequires:	automake >= 1:1.11
+BuildRequires:	libtool >= 2:2
 %ifarch %{ix86} %{x8664} x32
 BuildRequires:	yasm
 %endif
@@ -52,7 +52,7 @@ Statyczna biblioteka Kvazaar.
 
 %build
 %{__libtoolize}
-%{__aclocal}
+%{__aclocal} -I m4
 %{__autoconf}
 %{__autoheader}
 %{__automake}
@@ -66,6 +66,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+# obsoleted by pkg-config
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libkvazaar.la
+# packaged as %doc
+%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/kvazaar
 
 %clean
 rm -rf $RPM_BUILD_ROOT
