@@ -1,0 +1,11 @@
+--- kvazaar-0.8.2/configure.ac.orig	2016-03-15 18:41:05.548752072 +0100
++++ kvazaar-0.8.2/configure.ac	2016-03-15 18:41:22.412326953 +0100
+@@ -56,7 +56,7 @@
+ # host and cpu specific settings
+ AS_CASE([$host_cpu],
+         [i?86], [BITS="32" ASFLAGS="$ASFLAGS -DARCH_X86_64=0" X86="true"],
+-        [x86_64], [BITS="64" ASFLAGS="$ASFLAGS -DARCH_X86_64=1 -m amd64" X86="true"],
++        [x86_64], [BITS="x32" ASFLAGS="$ASFLAGS -DARCH_X86_64=1 -m x32" X86="true"],
+         [powerpc*], [PPC="true"],
+         [arm*], [ARM="true"]
+ )
