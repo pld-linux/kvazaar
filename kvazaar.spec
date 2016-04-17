@@ -2,7 +2,7 @@ Summary:	Kvazaar - open-source HEVC encoder
 Summary(pl.UTF-8):	Kvazaar - koder HEVC o otwartych źródłach
 Name:		kvazaar
 Version:	0.8.2
-Release:	2
+Release:	3
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	https://github.com/ultravideo/kvazaar/archive/v%{version}/%{name}-%{version}.tar.gz
@@ -15,6 +15,7 @@ BuildRequires:	libtool >= 2:2
 %ifarch %{ix86} %{x8664} x32
 BuildRequires:	yasm
 %endif
+Requires:	%{name}-libs = %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -24,11 +25,19 @@ Kvazaar is an open-source HEVC encoder licensed under LGPL v2.1.
 Kvazaar to mający otwarte źródła koder HEVC, wydany na licencji LGPL
 v2.1.
 
+%package libs
+Summary:	Kvazaar library
+Group:		Libraries
+Conflicts:	kvazaar < 0.8.2-3
+
+%description libs
+Kvazaar library.
+
 %package devel
 Summary:	Header files for Kvazaar library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki Kvazaar
 Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}-libs = %{version}-%{release}
 
 %description devel
 Header files for Kvazaar library.
@@ -79,13 +88,16 @@ rm -rf $RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	-p /sbin/ldconfig
-%postun	-p /sbin/ldconfig
+%post	libs -p /sbin/ldconfig
+%postun	libs -p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
 %doc COPYING CREDITS README.md doc/syntax_elements.txt
 %attr(755,root,root) %{_bindir}/kvazaar
+
+%files libs
+%defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libkvazaar.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libkvazaar.so.3
 
