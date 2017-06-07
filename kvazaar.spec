@@ -1,17 +1,25 @@
+#
+# Conditional build:
+%bcond_without	cryptopp	# selective encryption using crypto++
+
 Summary:	Kvazaar - open-source HEVC encoder
 Summary(pl.UTF-8):	Kvazaar - koder HEVC o otwartych źródłach
 Name:		kvazaar
-Version:	0.8.2
-Release:	3
+Version:	1.1.0
+Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
-Source0:	https://github.com/ultravideo/kvazaar/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	9c614d753dc055dcbb343546d3cd4048
+#Source0Download: https://github.com/ultravideo/kvazaar/releases
+Source0:	https://github.com/ultravideo/kvazaar/releases/download/v%{version}/%{name}-v%{version}.tar.gz
+# Source0-md5:	1f4a3a90d61f3a9e2c29779a868f183d
 Patch0:		x32.patch
+Patch1:		%{name}-link.patch
 URL:		https://github.com/ultravideo/kvazaar
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake >= 1:1.11
+%{?with_cryptopp:BuildRequires:	cryptopp-devel}
 BuildRequires:	libtool >= 2:2
+BuildRequires:	pkgconfig
 %ifarch %{ix86} %{x8664} x32
 BuildRequires:	yasm
 %endif
@@ -27,11 +35,15 @@ v2.1.
 
 %package libs
 Summary:	Kvazaar library
+Summary(pl.UTF-8):	Biblioteka Kvazaar
 Group:		Libraries
 Conflicts:	kvazaar < 0.8.2-3
 
 %description libs
 Kvazaar library.
+
+%description libs -l pl.UTF-8
+Biblioteka Kvazaar.
 
 %package devel
 Summary:	Header files for Kvazaar library
@@ -59,9 +71,8 @@ Statyczna biblioteka Kvazaar.
 
 %prep
 %setup -q
-%ifarch x32
 %patch0 -p1
-%endif
+%patch1 -p1
 
 %build
 %{__libtoolize}
@@ -69,9 +80,9 @@ Statyczna biblioteka Kvazaar.
 %{__autoconf}
 %{__autoheader}
 %{__automake}
-
 %configure \
-	--disable-silent-rules
+	--disable-silent-rules \
+	%{?with_cryptopp:--with-cryptopp}
 %{__make}
 
 %install
@@ -95,6 +106,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc COPYING CREDITS README.md doc/syntax_elements.txt
 %attr(755,root,root) %{_bindir}/kvazaar
+%{_mandir}/man1/kvazaar.1*
 
 %files libs
 %defattr(644,root,root,755)
@@ -105,7 +117,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libkvazaar.so
 %{_includedir}/kvazaar.h
-%{_includedir}/kvazaar_version.h
 %{_pkgconfigdir}/kvazaar.pc
 
 %files static

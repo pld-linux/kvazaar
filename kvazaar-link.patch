@@ -1,0 +1,12 @@
+--- kvazaar-1.1.0/src/Makefile.am.orig	2016-09-29 18:17:33.000000000 +0200
++++ kvazaar-1.1.0/src/Makefile.am	2017-06-06 22:00:04.791623138 +0200
+@@ -142,7 +142,8 @@
+ 	libaltivec.la \
+ 	libavx2.la \
+ 	libsse2.la \
+-	libsse41.la
++	libsse41.la \
++	-lpthread
+ 
+ if USE_CRYPTOPP
+ libkvazaar_la_SOURCES += \
