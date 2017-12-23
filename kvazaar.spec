@@ -5,13 +5,13 @@
 Summary:	Kvazaar - open-source HEVC encoder
 Summary(pl.UTF-8):	Kvazaar - koder HEVC o otwartych źródłach
 Name:		kvazaar
-Version:	1.1.0
+Version:	1.2.0
 Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
 #Source0Download: https://github.com/ultravideo/kvazaar/releases
-Source0:	https://github.com/ultravideo/kvazaar/releases/download/v%{version}/%{name}-v%{version}.tar.gz
-# Source0-md5:	1f4a3a90d61f3a9e2c29779a868f183d
+Source0:	https://github.com/ultravideo/kvazaar/releases/download/v%{version}/%{name}-%{version}.tar.xz
+# Source0-md5:	829c4d94517047e09110f341c29603cb
 Patch0:		x32.patch
 Patch1:		%{name}-link.patch
 URL:		https://github.com/ultravideo/kvazaar
@@ -20,6 +20,8 @@ BuildRequires:	automake >= 1:1.11
 %{?with_cryptopp:BuildRequires:	cryptopp-devel}
 BuildRequires:	libtool >= 2:2
 BuildRequires:	pkgconfig
+BuildRequires:	tar >= 1:1.22
+BuildRequires:	xz
 %ifarch %{ix86} %{x8664} x32
 BuildRequires:	yasm
 %endif
@@ -111,7 +113,7 @@ rm -rf $RPM_BUILD_ROOT
 %files libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libkvazaar.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libkvazaar.so.3
+%attr(755,root,root) %ghost %{_libdir}/libkvazaar.so.4
 
 %files devel
 %defattr(644,root,root,755)
