@@ -1,0 +1,17 @@
+--- kvazaar-1.2.0/src/extras/crypto.cpp.orig	2017-11-17 14:33:13.000000000 +0100
++++ kvazaar-1.2.0/src/extras/crypto.cpp	2018-12-30 20:25:06.899022843 +0100
+@@ -16,10 +16,10 @@
+ 
+ struct crypto_handle_t {
+   cipher_t *cipher;
+-  byte key[CryptoPP::AES::DEFAULT_KEYLENGTH];
+-  byte iv[CryptoPP::AES::BLOCKSIZE];
+-  byte out_stream_counter[CryptoPP::AES::BLOCKSIZE];
+-  byte counter[CryptoPP::AES::BLOCKSIZE];
++  CryptoPP::byte key[CryptoPP::AES::DEFAULT_KEYLENGTH];
++  CryptoPP::byte iv[CryptoPP::AES::BLOCKSIZE];
++  CryptoPP::byte out_stream_counter[CryptoPP::AES::BLOCKSIZE];
++  CryptoPP::byte counter[CryptoPP::AES::BLOCKSIZE];
+   int couter_avail;
+   int counter_index;
+   int counter_index_pos;
