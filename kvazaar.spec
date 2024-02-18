@@ -5,13 +5,13 @@
 Summary:	Kvazaar - open-source HEVC encoder
 Summary(pl.UTF-8):	Kvazaar - koder HEVC o otwartych źródłach
 Name:		kvazaar
-Version:	2.2.0
+Version:	2.3.0
 Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
 #Source0Download: https://github.com/ultravideo/kvazaar/releases
 Source0:	https://github.com/ultravideo/kvazaar/releases/download/v%{version}/%{name}-%{version}.tar.xz
-# Source0-md5:	fe0ac0892aa8124ff1530bd195537fa4
+# Source0-md5:	480716b27cacac494d273b71484ce52b
 Patch0:		x32.patch
 Patch1:		%{name}-link.patch
 URL:		https://github.com/ultravideo/kvazaar
